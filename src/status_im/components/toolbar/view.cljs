@@ -9,6 +9,7 @@
             [status-im.components.sync-state.gradient :refer [sync-state-gradient-view]]
             [status-im.components.styles :refer [icon-default
                                                  icon-search]]
+            [status-im.components.context-menu :refer [context-menu]]
             [status-im.components.toolbar.actions :as act]
             [status-im.components.toolbar.styles :as st]
             [status-im.accessibility-ids :as id]
@@ -29,7 +30,7 @@
        (when-not hide-nav?
          (if nav-action
            [touchable-highlight {:on-press (:handler nav-action)}
-            [view (get-in platform-specific [:component-styles :toolbar-nav-action])
+            [view
              [image (:image nav-action)]]]
            [touchable-highlight {:on-press            #(dispatch [:navigate-back])
                                  :accessibility-label id/toolbar-back-button}
@@ -44,14 +45,25 @@
       [view (st/toolbar-actions-container (count actions) custom-action)
        (if actions
          (for [{action-image   :image
+                action-options :options
                 action-handler :handler} actions]
-           ^{:key (str "action-" action-image)}
-           [touchable-highlight {:on-press action-handler}
-            [view st/toolbar-action
-             [image action-image]]])
+           (with-meta
+             (cond (= action-image :blank)
+                   [view st/toolbar-action]
+                   action-options
+                   [context-menu
+                    [view st/toolbar-action
+                     [image action-image]]
+                    action-options]
+                   :else
+                   [touchable-highlight {:on-press action-handler}
+                    [view st/toolbar-action
+                     [image action-image]]])
+             {:key (str "action-" action-image)}))
          custom-action)]]
      [sync-state-gradient-view]
-     [view st/toolbar-line]]))
+     [view st/toolbar-border-container
+      [view st/toolbar-border]]]))
 
 (defn- toolbar-search-submit [on-search-submit]
   (let [text @(subscribe [:get-in [:toolbar-search :text]])]
@@ -86,7 +98,7 @@
                             (dispatch [:set-in [:toolbar-search :text] ""]))
         actions          (if-not show-search?
                            (into [(act/search #(toggle-search-fn search-key))] actions))]
-    [toolbar {:style          (merge st/toolbar-with-search style)
+    [toolbar {:style          style
               :nav-action     (if show-search?
                                 (act/back #(toggle-search-fn nil))
                                 nav-action)

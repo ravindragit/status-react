@@ -14,8 +14,7 @@
 (defn toolbar [chats-scrolled?]
   (merge {:background-color (if chats-scrolled?
                               toolbar-background1
-                              toolbar-background2)}
-         (get-in p/platform-specific [:component-styles :toolbar])))
+                              toolbar-background2)}))
 
 (def gradient-top-bottom-shadow
   ["rgba(24, 52, 76, 0.165)"

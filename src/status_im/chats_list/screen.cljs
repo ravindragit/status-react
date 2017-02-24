@@ -37,8 +37,7 @@
       :title              (label :t/chats)
       :search-placeholder (label :t/search-for)
       :nav-action         (act/hamburger open-drawer)
-      :actions            actions
-      :style              (st/toolbar chats-scrolled?)}]))
+      :actions            actions}]))
 
 (defn chats-action-button []
   [action-button {:button-color color-blue

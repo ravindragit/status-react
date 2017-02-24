@@ -46,7 +46,15 @@
   [db [_ _ click-handler]]
   (-> db
       (assoc-in [:toolbar-search :show] nil)
+      (assoc-in [:contact-list-ui-props :edit?] false)
       (assoc :contacts-click-handler click-handler)))
+
+(defmethod nav/preload-data! :reorder-groups
+  [db [_ _]]
+  (assoc db :groups-order (->> (vals (:contact-groups db))
+                               (remove :pending?)
+                               (sort-by :order >)
+                               (map :group-id))))
 
 (register-handler :remove-contacts-click-handler
   (fn [db]
@@ -326,8 +334,8 @@
 
 (register-handler :remove-contact-from-group
   (u/side-effect!
-    (fn [_ [_ {:keys [whisper-identity]} group]]
-      (let [group' (update group :contacts (remove-contact-from-group whisper-identity))]
+    (fn [{:keys [contact-groups]} [_ {:keys [whisper-identity]} {:keys [group-id]}]]
+      (let [group' (update (contact-groups group-id) :contacts (remove-contact-from-group whisper-identity))]
         (dispatch [:update-group group'])))))
 
 (register-handler :remove-contact

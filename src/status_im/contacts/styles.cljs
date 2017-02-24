@@ -5,15 +5,13 @@
                                                  color-white
                                                  color-separator
                                                  color-gray2
+                                                 color-gray4
+                                                 color-blue
                                                  color-gray]]
             [status-im.components.toolbar.styles :refer [toolbar-background1 toolbar-background2]]
             [status-im.utils.platform :as p]))
 
 ;; Contacts list
-
-(def toolbar-shadow
-  {:height           2
-   :background-color toolbar-background2})
 
 (def toolbar-actions
   {:flex-direction :row})
@@ -46,12 +44,8 @@
 (def contact-group
   {:flex-direction :column})
 
-(def contact-group-subtitle
-  {:margin-left 16})
-
 (def contact-group-count
-  {:flex        1
-   :margin-left 8
+  {:margin-left 8
    :opacity     0.6})
 
 (def contact-group-header-gradient-top
@@ -74,24 +68,22 @@
    "rgba(24, 52, 76, 0.05)"])
 
 (def show-all
-  {:flexDirection   :row
-   :alignItems      :center
-   :height          56
-   :backgroundColor color-white})
+  (merge (get-in p/platform-specific [:component-styles :contacts :show-all])
+         {:flexDirection   :row
+          :alignItems      :center
+          :backgroundColor color-white}))
 
 (def show-all-text
-  {:marginLeft    72
-   :fontSize      14
-   :color         text3-color
-   ;; ios only:
-   :letterSpacing 0.5})
+  (get-in p/platform-specific [:component-styles :contacts :show-all-text]))
 
 (def contact-separator-container
   {:background-color color-white})
 
 (def contact-container
-  {:flex-direction   :row
-   :background-color color-white})
+  (merge (get-in p/platform-specific [:component-styles :contacts :contact-container])
+         {:flex-direction   :row
+          :align-items      :center
+          :background-color color-white}))
 
 (def letter-container
   {:paddingTop  11
@@ -101,10 +93,6 @@
 (def letter-text
   {:fontSize 24
    :color    text3-color})
-
-(def contact-photo-container
-  {:marginTop  4
-   :marginLeft 12})
 
 (def option-inner-container
   {:flex                1
@@ -139,21 +127,20 @@
    :height           8})
 
 (def contact-inner-container
-  {:flex            1
-   :flexDirection   :row
-   :height          56
-   :margin-right    16
-   :backgroundColor color-white})
+  (merge (get-in p/platform-specific [:component-styles :contacts :contact-inner-container])
+         {:flex            1
+          :flexDirection   :row
+          :align-items     :center
+          :padding-left    16
+          :backgroundColor color-white}))
 
 (def info-container
-  {:flex           1
-   :flexDirection  :column
-   :margin-left    12
-   :justifyContent :center})
+  (merge (get-in p/platform-specific [:component-styles :contacts :info-container])
+         {:flex           1
+          :flexDirection  :column}))
 
 (def name-text
-  {:fontSize 15
-   :color    text1-color})
+  (get-in p/platform-specific [:component-styles :contacts :name-text]))
 
 (def info-text
   {:marginTop 1
@@ -162,8 +149,7 @@
 
 (def more-btn
   {:width          24
-   :height         56
-   :margin-right   14
+   :height         24
    :alignItems     :center
    :justifyContent :center})
 

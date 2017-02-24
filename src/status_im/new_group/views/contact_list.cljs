@@ -17,7 +17,7 @@
   (toolbar-with-search
     {:show-search?       (= show-search? :contact-group-list)
      :search-key         :contact-group-list
-     :title              (str (label :t/new-group) " (" contacts-count ")")
+     :title              (str (label :t/new-group) " " contacts-count)
      :search-placeholder (label :t/search-for)}))
 
 (defview contact-group-list []

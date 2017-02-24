@@ -3,7 +3,7 @@
 (def color-transparent "transparent")
 (def color-blue "#7099e6")
 (def color-blue-transparent "#7099e632")
-(def color-black "#000000de")
+(def color-black "#000000")
 (def color-purple "#a187d5")
 (def color-gray "#838c93de")
 (def color-gray2 "#8f838c93")
@@ -95,12 +95,6 @@
    :justify-content  :center
    :align-items      :center
    :background-color color-light-blue})
-
-(def confirm-button-label
-  {:color          color-white
-   :font-size      17
-   :line-height    20
-   :letter-spacing -0.2})
 
 (def context-menu
   {:customStyles {:optionsContainer {:padding-top 8

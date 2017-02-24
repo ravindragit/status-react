@@ -10,8 +10,8 @@
 (def toolbar-background1 color-white)
 (def toolbar-background2 color-light-gray)
 
-(def toolbar-height 56)
 (def toolbar-icon-width 24)
+(def toolbar-icon-height 24)
 (def toolbar-icon-spacing 24)
 
 (def toolbar-gradient
@@ -22,70 +22,65 @@
    :elevation       2})
 
 (def toolbar
-  {:flex-direction :row
-   :height         toolbar-height})
-
-(def toolbar-line
-  {:height           1
-   :background-color color-gray5
-   :opacity          0.4})
+  (merge {:flex-direction :row}
+         (get-in p/platform-specific [:component-styles :toolbar])))
 
 (defn toolbar-nav-actions-container [actions]
-  {:width          (when (and actions (> (count actions) 0))
-                     (-> (+ toolbar-icon-width toolbar-icon-spacing)
-                         (* (count actions))
-                         (+ toolbar-icon-spacing)))
-   :flex-direction "row"})
+  (let [center? (get-in p/platform-specific [:component-styles :toolbar-title-center?])]
+    (merge {:flex-direction "row"}
+           (when center?
+             {:width          (when (and actions (> (count actions) 0))
+                                (-> (+ toolbar-icon-width toolbar-icon-spacing)
+                                    (* (count actions))))}))))
 
-(def toolbar-nav-action
-  {:width           toolbar-height
-   :height          toolbar-height
-   :align-items     :center
-   :justify-content :center
-   :padding-right   12})
 
 (def toolbar-title-container
   (merge (get-in p/platform-specific [:component-styles :toolbar-title-container])
          {:flex           1
-          :justifyContent :center}))
+          :align-self     :stretch}))
 
 (def toolbar-title-text
-  {:margin-top 0
-   :color      text1-color
-   :font-size  16})
+  {:color          text1-color
+   :letter-spacing -0.2
+   :font-size      17})
+
+(def toolbar-border-container
+  (get-in p/platform-specific [:component-styles :toolbar-border-container]))
+
+(def toolbar-border
+  (get-in p/platform-specific [:component-styles :toolbar-border]))
 
 (defn toolbar-actions-container [actions-count custom]
-  (merge {:flex-direction "row"
-          :margin-left    toolbar-icon-spacing}
+  (merge {:flex-direction "row"}
          (when (and (zero? actions-count) (not custom))
            {:width (+ toolbar-icon-width toolbar-icon-spacing)})))
 
 (def toolbar-action
   {:width           toolbar-icon-width
-   :height          toolbar-height
-   :margin-right    toolbar-icon-spacing
+   :height          toolbar-icon-height
+   :margin-left     toolbar-icon-spacing
    :align-items     :center
    :justify-content :center})
 
 (def toolbar-with-search
-  {:background-color toolbar-background1
-   :elevation        0})
+  {:background-color toolbar-background1})
 
 (def toolbar-with-search-content
-  {:flex            1
-   :justify-content :center})
+  (merge (get-in p/platform-specific [:component-styles :toolbar-with-search-content])
+         {:flex 1}))
 
 (def toolbar-search-input
-  {:flex        1
-   :align-self  :stretch
-   :margin-left 18
-   :margin-top  2
-   :font-size   14
-   :color       color-blue})
+  (merge (get-in p/platform-specific [:component-styles :toolbar-search-input])
+         {:flex           1
+          :padding-bottom 10
+          :font-size      17
+          :padding-top    0
+          :align-self     :stretch
+          :color          color-black}))
 
 (def toolbar-with-search-title
   {:color       color-black
-   :font-size   16})
+   :font-size   17})
 
 (def action-default
   {:width  24
